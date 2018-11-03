@@ -47,14 +47,15 @@ class RtmBot(object):
 
         self.debug = self.config.get('DEBUG', False)
         # establish logging
-        log_file = config.get('LOGFILE', 'rtmbot.log')
         if self.debug:
             log_level = logging.DEBUG
         else:
             log_level = logging.INFO
-        logging.basicConfig(filename=log_file,
-                            level=log_level,
-                            format='%(asctime)s %(message)s')
+        logging_conf = dict(level=log_level, format='%(asctime)s %(message)s')
+        log_file = config.get('LOGFILE')
+        if log_file:
+            logging_conf['filename'] = log_file
+        logging.basicConfig(**logging_conf)
         logging.info('Initialized in: {}'.format(self.directory))
 
         # initialize stateful fields
